@@ -1,6 +1,12 @@
 ---
 title: Spectre Attack
-date: 2019/10/5
+date: 2019.10.5
+catalog: true
+subtitle: 
+header-img: 
+top: false
+tags: 
+categories: Security 
 ---
 ## Spectre攻击概述
 Spectre攻击是一种利用cpu在执行代码时的漏洞，诱使victim程序执行其本不该执行的代码导致数据的泄漏，在2017年被发现直到2018年才会公开，影响了大量的使用Intel，ARM，AMD芯片的设备。

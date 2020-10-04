@@ -1,6 +1,12 @@
 ---
 title: Library Interpostion
-date: 2019/11/17
+date: 2019.11.17
+catalog: true
+subtitle: 
+header-img: 
+top: false
+tags: 
+categories: CSAPP 
 ---
 # Library Interposition
 最近在看CSAPP的第七章Linking，其中提到对库函数调用的修改（library interposition),特意记录下来与大家分享，并让自己加深巩固理解。
