@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ARM PSA 框架介绍, 我写的诗有点冷">
+    <meta name="keywords" content="llvm 词法解析器, 我写的诗有点冷">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ARM PSA 框架介绍 | 我写的诗有点冷</title>
+    <title>llvm 词法解析器 | 我写的诗有点冷</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ARM PSA 框架介绍</h1>
+                    <h1 class="description center-align post-title">llvm 词法解析器</h1>
                 </div>
             </div>
         </div>
@@ -430,23 +430,14 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/OS/">
-                                <span class="chip bg-color">OS</span>
+                            <a href="/tags/llvm-%E5%85%A5%E9%97%A8/">
+                                <span class="chip bg-color">llvm 入门</span>
                             </a>
                         
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/MCU/" class="post-category">
-                                MCU
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -455,7 +446,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-11-21
+                    2021-02-26
                 </div>
                 
 
@@ -471,118 +462,89 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Secure-IPC"><a href="#Secure-IPC" class="headerlink" title="Secure IPC"></a>Secure IPC</h2><p>Secure IPC 基于会话模式，在客户端和 RoT 服务之间建立连接。  IPC 消息基于请求应答模型<br>IPC 的设计在客户端和 RoT 服务之间建立共享内存<br>RoT 服务不能够直接访问客户端内存</p>
-<h2 id="Isolation-architecture"><a href="#Isolation-architecture" class="headerlink" title="Isolation architecture"></a>Isolation architecture</h2><h2 id="Secure-Partition"><a href="#Secure-Partition" class="headerlink" title="Secure Partition"></a>Secure Partition</h2><h3 id="Secure-Partition-excution"><a href="#Secure-Partition-excution" class="headerlink" title="Secure Partition excution"></a>Secure Partition excution</h3><p>每个 Secure Partition 都运行在一个由 SPM 管理的单一线程。<br>一个 Secure Partition 从一个在 manifest 里面定义的 entry_point 符号开始执行。<br>初始化完成以后， Secure Partition 线程必须是一个循环，并且在等待输入。<br>一个 Secure Partition 永远不会退出循环或者从 entry_point 返回。如果这样做会产生一个变成错误。如果 Secure Partition 被中断，该 Secure Partition 会从被打断的位置恢复上下文并继续执行。Secure Partition 的输入都是以信号的形式存在。每个信号代表一个特定的输入源。</p>
-<h3 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h3><p>信号是发送给 Secure Partition 一个异步的通知，用来通知有一个输入请求处理。每一个 Secure Partition 有32个不同的信号。一个信号由一个32位整型中的一个比特位表示。</p>
-<table>
-<thead>
-<tr>
-<th>信号类型</th>
-<th>目标</th>
-<th>何时断言</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>RoT 服务</td>
-<td>主要用于 PSA 固件框架中的 IPC 机制</td>
-<td>一个消息在 RoT 服务排队</td>
-</tr>
-<tr>
-<td>中断</td>
-<td>管理 Secure Partition 中的硬件中断</td>
-<td>一个边界中断行会被断言</td>
-</tr>
-<tr>
-<td>门铃 doorbell</td>
-<td>用于 Secure Partition 之间的通知机制</td>
-<td>一个 Secure Partition 会通知这一类型的信号</td>
-</tr>
-<tr>
-<td>未分配</td>
-<td>这类信号不会在 Secure Partition 中被使用</td>
-<td>永不</td>
-</tr>
-<tr>
-<td>保留</td>
-<td>这类信号为未来的使用保留</td>
-<td>永不</td>
-</tr>
-<tr>
-<td>\</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>以下信号会被保留，用于 Secure Partitions</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>信号 number</td>
-<td>描述</td>
-<td></td>
-</tr>
-<tr>
-<td>—</td>
-<td>—</td>
-<td></td>
-</tr>
-<tr>
-<td>0x00000001U</td>
-<td>Reserved</td>
-<td></td>
-</tr>
-<tr>
-<td>0x00000002U</td>
-<td>Reserved</td>
-<td></td>
-</tr>
-<tr>
-<td>0x00000004U</td>
-<td>Reserved</td>
-<td></td>
-</tr>
-<tr>
-<td>0x00000008U</td>
-<td>Reserved</td>
-<td></td>
-</tr>
-<tr>
-<td>剩下的28个通用信号可以被用于的 Secure Partition 的其他输入。同一个信号对于不同的 Secure Partition 可能会有不同的作用。</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>在 Secure Partition manifest 中列出了 Secure Partition 用到的所有中断，RoT 服务以及信号名称。</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h3 id="调度-Secure-Partitions"><a href="#调度-Secure-Partitions" class="headerlink" title="调度 Secure Partitions"></a>调度 Secure Partitions</h3><p>PSA 固件框架允许多客户端在同一时间请求一个或者多个 RoT 服务或者发送一个或多个中断信号。这时由 SPM 来决定如何去执行这些被请求的 Secure Partitions。<br>SPM 必须满足以下要求:</p>
-<ul>
-<li>分发所有的 RoT 服务消息给目标 Secure Partitions</li>
-<li>执行已有一个或多个信号需要处理的 Secure Partitions<br>SPM 在满足这些需求上面具有灵活性。这个灵活性允许一个较为简单的 SPM 在资源受限的设备上实现，也可以在一些资源充足的设备上实现一个较为复杂的，具有抢占式调度的 SPM。<br>SPM 实现不需要支持对 Secure Partitions 的公平调度。</li>
-</ul>
-<h4 id="调度规则"><a href="#调度规则" class="headerlink" title="调度规则"></a>调度规则</h4><p>SPM 的实现必须满足以下的调度需求:</p>
-<ul>
-<li>如何 NSPE 是空闲的而且没有 Secure Partition 准备运行，这时 SPM 必须运行一个 Secure Partitons。</li>
-<li>当一个 Secure Partitions 被抢占，它的上下文必须被保存，以便下次切换回来的时候能够恢复执行。这个上下文可以被硬件保存，也可以被软件保存。</li>
-</ul>
-<h2 id="RoT-Services"><a href="#RoT-Services" class="headerlink" title="RoT Services"></a>RoT Services</h2><p>信任根服务（ Root of Trust Services，RoT）是实现在 Secure Partition 里面的提供给客户端或者其他 Secure Partition 的服务。它的架构图如下图所示。<br><img style="display: block; margin: 0 auto;" src="images/RoT_service_architecture.jpg" alt="" /><br><br>SPM 实现需要注意:<br>客户端 API 不仅可以被 NSPE 中的任务使用，也可以被 Secure Partitions使用。</p>
-<p>客户端 API 函数的实现在在不同安全区域会有所不同。</p>
-<ul>
-<li>在 Non-secure 客户端中使用的客户端 API 需要将请求发送给 SPM。</li>
-<li>在 Secure Partition 客户端中使用的客户端 API 可以直接使用 SPM 服务。</li>
-</ul>
-<h3 id="定义-RoT-服务"><a href="#定义-RoT-服务" class="headerlink" title="定义 RoT 服务"></a>定义 RoT 服务</h3><p>一些 RoT 服务的属性必须在 Secure Partition manifest 文件中定义。这些属性包括 识别符，版本，以及授权的访问。<br>一个 RoT 服务由一个 RoT Service ID（SID）决定。一个 SID 是一个32位的整型，并且在 Secure Partition manifest 中与一个符号名字相关联。<br>RoT 的 SID 定义类似于 MAC 地址，[32:12]位用于定义 Vender ID。</p>
-<h3 id="使用-RoT-服务"><a href="#使用-RoT-服务" class="headerlink" title="使用 RoT 服务"></a>使用 RoT 服务</h3><p>IPC 框架下的客户端 API 十分简单，由以下三个主要的函数组成:</p>
-<ul>
-<li>psa_psa_connect() 建立一个 IPC 连接。</li>
-<li>psa_call() 发送请求给一个 IPC 连接。</li>
-<li>psa_close() 终止一个 IPC 连接。</li>
-</ul>
-<h3 id="处理-RoT-服务消息"><a href="#处理-RoT-服务消息" class="headerlink" title="处理 RoT 服务消息"></a>处理 RoT 服务消息</h3><p><strong>消息类型</strong><br>SPM 通过分发 IPC 消息给 Secure Partition 来管理来自客户端的连接并且处理其请求。一共有三种消息的类型如下表所示。<br>|消息类型|消息值|描述|<br>|—-|—-|—–|<br>|Connection|PSA_IPC_CONNECT|由 psa_connect() 发送来建立一个新的连接。|<br>|Request|&gt;=0|由 psa_call() 来发送一个请求，这个值由 caller 提供|<br>|Disconnection|PSA_IPC_DISCONNECT|由 psa_close() 来结束一个连接。|<br><br><strong>处理消息</strong></p>
-<p>RoT 服务不能直接访问客户端的参数。输入的参数一般通过psa_read()将输入参数拷贝到 Secure Partition 的私有内存之中，处理结束之后再用psa_write()将响应拷贝到输出的参数。<br>参数可以是输入或者是输出的，但是不能又是输入又是输出。</p>
+                <h2 id="LLVM简介"><a href="#LLVM简介" class="headerlink" title="LLVM简介"></a>LLVM简介</h2><p>LLVM项目是一款模块化并且可重用的编译器和工具链LLVM是一套编译器基础设施项目，为自由软件，以C++写成，包含一系列模块化的编译器组件和工具链，用来开发编译器前端和后端。它是为了任意一种编程语言而写成的程序，利用虚拟技术创造出编译时期、链接时期、运行时期以及“闲置时期”的优化。<br>本文参考<a target="_blank" rel="noopener" href="https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html">LLVM官方教程</a>，介绍如何用LLVM为一个简单的语言编写一个解析器（准确来说称为前端）</p>
+<h2 id="Kaleidoscpe"><a href="#Kaleidoscpe" class="headerlink" title="Kaleidoscpe"></a>Kaleidoscpe</h2><p>我们的语言称为“Kaleidoscope”，以下是该语言一个简单的例子：</p>
+<pre><code># Compute the x&#39;th fibonacci number
+def fib(x)
+    if x&lt; 3 then
+        1
+    else
+        fib(x-1)+fib(x-2)
+# This experssion will cmpute the 40th number.
+fib(40)
+</code></pre>
+<p>为了使以上语言能够运行起来，我们的前端需要两个部分：词法解析器以及语法解析器。</p>
+<h2 id="词法解析器（Lexer）"><a href="#词法解析器（Lexer）" class="headerlink" title="词法解析器（Lexer）"></a>词法解析器（Lexer）</h2><p>词法解析器用C++编写，它的目的是对代码文件进行扫描，将文件中的<code>字符</code>以及<code>关键字</code>做简单的解析，并以token的形式进行存储。</p>
+<pre><code>// The lexer returns tokens [0-255] if it is an unknown character, otherwise one
+// of these for known things.
+enum Token &#123;
+  tok_eof = -1,
+
+  // commands
+  tok_def = -2,
+  tok_extern = -3,
+
+  // primary
+  tok_identifier = -4,
+  tok_number = -5,
+&#125;;
+
+static std::string IdentifierStr; // Filled in if tok_identifier
+static double NumVal;             // Filled in if tok_number
+</code></pre>
+<p>以上代码给出了token的几种形式，文件中的字符可能是文件终止符EOF，也可能是声明语句def或者extern。如果lexer遇到一句赋值语句（如x=30），则x为一个变量的标识符（tok_identifier），而30为一个数值（tok_number）。<br>确定token的形式后，我们先编写一个对文件字符的扫描器，对字符进行读取。</p>
+<pre><code>/// gettok - Return the next token from standard input.
+static int gettok() &#123;
+  static int LastChar = &#39; &#39;;
+
+  // Skip any whitespace.
+  while (isspace(LastChar))
+    LastChar = getchar();
+</code></pre>
+<p>之后对字符进行识别，返回不同的token。如果字符不属于定于的token范围（比如“+”运算符），则直接返回该字符的ascii码。</p>
+<pre><code>if (isalpha(LastChar)) &#123; // identifier: [a-zA-Z][a-zA-Z0-9]*
+  IdentifierStr = LastChar;
+  while (isalnum((LastChar = getchar())))
+    IdentifierStr += LastChar;
+
+  if (IdentifierStr == &quot;def&quot;)
+    return tok_def;
+  if (IdentifierStr == &quot;extern&quot;)
+    return tok_extern;
+  return tok_identifier;
+&#125;
+// Indentifier numeric values
+if (isdigit(LastChar) || LastChar == &#39;.&#39;) &#123;   // Number: [0-9.]+
+  std::string NumStr;
+  do &#123;
+    NumStr += LastChar;
+    LastChar = getchar();
+  &#125; while (isdigit(LastChar) || LastChar == &#39;.&#39;);
+
+  NumVal = strtod(NumStr.c_str(), 0);
+  return tok_number;
+&#125;
+// Handler comments
+if (LastChar == &#39;#&#39;) &#123;
+  // Comment until end of line.
+  do
+    LastChar = getchar();
+  while (LastChar != EOF &amp;&amp; LastChar != &#39;\n&#39; &amp;&amp; LastChar != &#39;\r&#39;);
+
+  if (LastChar != EOF)
+    return gettok();
+&#125;
+// Check for end of file.  Don&#39;t eat the EOF.
+  if (LastChar == EOF)
+    return tok_eof;
+
+  // Otherwise, just return the character as its ascii value.
+  int ThisChar = LastChar;
+  LastChar = getchar();
+  return ThisChar;
+&#125;
+</code></pre>
+<p>可以发现，token处理一些代码中的预处理字符，比如“extern”，“def”，“#”等，但对代码运行时的一些字符比如运算符不做处理。<br>至此，一个简单的词法解析器完成。</p>
 
             </div>
             <hr/>
@@ -608,7 +570,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://x-codingman.github.io/2020/11/21/arm_psa_firmware_framework/">https://x-codingman.github.io/2020/11/21/arm_psa_firmware_framework/</a>
+                    <a href="https://x-codingman.github.io/2021/02/26/llvm_lexer/">https://x-codingman.github.io/2021/02/26/llvm_lexer/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -646,8 +608,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/OS/">
-                                    <span class="chip bg-color">OS</span>
+                                <a href="/tags/llvm-%E5%85%A5%E9%97%A8/">
+                                    <span class="chip bg-color">llvm 入门</span>
                                 </a>
                             
                         </div>
@@ -819,13 +781,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/02/26/llvm_lexer/">
+                <a href="/2021/03/05/llvm-ast/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="llvm 词法解析器">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="llvm_ast">
                         
-                        <span class="card-title">llvm 词法解析器</span>
+                        <span class="card-title">llvm_ast</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -836,7 +798,7 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-02-26
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-05
                         </span>
                         <span class="publish-author">
                             
@@ -864,13 +826,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/11/01/arm_mode/">
+                <a href="/2020/11/21/arm_psa_firmware_framework/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="ARM Cortex-M 系列处理器权限模式介绍">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="ARM PSA 框架介绍">
                         
-                        <span class="card-title">ARM Cortex-M 系列处理器权限模式介绍</span>
+                        <span class="card-title">ARM PSA 框架介绍</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -881,7 +843,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-21
                             </span>
                         <span class="publish-author">
                             
